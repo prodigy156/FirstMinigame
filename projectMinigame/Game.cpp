@@ -108,10 +108,10 @@ bool Game::Update()
 	int fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT)	fy = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT)	fy = 1;
-	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT)	fx = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT)	fx = 1;
+	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && (Player.GetY() >= 0))	fy = -1;
+	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && (Player.GetY() <= 687))	fy = 1;
+	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && (Player.GetX() >= 0))	fx = -1;
+	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && (Player.GetX() <= 920))	fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
 		int x, y, w, h;
@@ -125,7 +125,7 @@ bool Game::Update()
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
-
+	
 	//Logic
 	//Scene scroll
 	Scene.Move(-1, 0);
