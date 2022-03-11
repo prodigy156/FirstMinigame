@@ -35,8 +35,10 @@ private:
 	SDL_Renderer *Renderer;
 	SDL_Texture *img_background, *img_player, *img_shot;
 
+	Uint32 buttons; 
 	Entity Player, Shots[MAX_SHOTS], Scene;
-	int idx_shot;
+	int idx_shot;ç
+	int mouseX, mouseY;
 
 	bool god_mode;
 

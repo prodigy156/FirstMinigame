@@ -96,7 +96,7 @@ bool Game::Input()
 		else
 			keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
 	}
-
+	buttons = SDL_GetMouseState(&mouseX, &mouseY);
 	return true;
 }
 bool Game::Update()
@@ -114,6 +114,18 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && (Player.GetX() <= 920))	fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
+		int x, y, w, h;
+		Player.GetRect(&x, &y, &w, &h);
+		//size: 56x20
+		//offset from player: dx, dy = [(29, 3), (29, 59)]
+		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
+		idx_shot++;
+		idx_shot %= MAX_SHOTS;
+		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
+		idx_shot++;
+		idx_shot %= MAX_SHOTS;
+	}
+	if (buttons == SDL_BUTTON_LEFT) {
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
@@ -177,6 +189,13 @@ void Game::Draw()
 			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		}
 	}
+	//(Just 4 testing) Draw the cursor
+	rc.x = mouseX;
+	rc.y = mouseY;
+	rc.w = 32;
+	rc.h = 32;
+	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
+
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
