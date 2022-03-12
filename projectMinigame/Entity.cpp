@@ -8,7 +8,7 @@ Entity::Entity()
 Entity::~Entity()
 {
 }
-void Entity::Init(int posx, int posy, int w, int h, int s) 
+void Entity::Init(int posx, int posy, int w, int h, int s, int posx2, int posy2) 
 {
 	x = posx;
 	y = posy;
@@ -16,6 +16,9 @@ void Entity::Init(int posx, int posy, int w, int h, int s)
 	height = h;
 	speed = s;
 	is_alive = true;
+	x_shot = posx2;
+	y_shot = posy2;
+
 }
 void Entity::GetRect(int *posx, int *posy, int *w, int *h)
 {
@@ -31,6 +34,14 @@ int Entity::GetX()
 int Entity::GetY()
 {
 	return y;
+}
+int Entity::GetShotX()
+{
+	return x_shot;
+}
+int Entity::GetShotY()
+{
+	return y_shot;
 }
 int Entity::GetWidth()
 {
@@ -49,7 +60,7 @@ bool Entity::IsAlive()
 	return is_alive;
 }
 
-void Entity::Move(int dx, int dy)
+void Entity::Move(float dx, float dy)
 {
 	x += dx * speed;
 	y += dy * speed;

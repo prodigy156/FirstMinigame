@@ -35,11 +35,11 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5);
+	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5, NULL, NULL);
 	idx_shot = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
-	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4);
+	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
 	god_mode = false;
 
 	return true;
@@ -96,7 +96,9 @@ bool Game::Input()
 		else
 			keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
 	}
+
 	buttons = SDL_GetMouseState(&mouseX, &mouseY);
+
 	return true;
 }
 bool Game::Update()
@@ -105,23 +107,23 @@ bool Game::Update()
 	if (!Input())	return true;
 
 	//Process Input
-	int fx = 0, fy = 0;
+	float fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
-	if (keys[SDL_SCANCODE_UP] == KEY_REPEAT && (Player.GetY() >= 0))	fy = -1;
-	if (keys[SDL_SCANCODE_DOWN] == KEY_REPEAT && (Player.GetY() <= 687))	fy = 1;
-	if (keys[SDL_SCANCODE_LEFT] == KEY_REPEAT && (Player.GetX() >= 0))	fx = -1;
-	if (keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT && (Player.GetX() <= 920))	fx = 1;
+	if (keys[SDL_SCANCODE_W] == KEY_REPEAT) fy = -1;
+	if (keys[SDL_SCANCODE_S] == KEY_REPEAT) fy = 1;
+	if (keys[SDL_SCANCODE_A] == KEY_REPEAT) fx = -1;
+	if (keys[SDL_SCANCODE_D] == KEY_REPEAT) fx = 1;
 	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
 	{
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
 		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
+		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10, NULL, NULL);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
-		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
+		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10, NULL, NULL);
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
@@ -130,10 +132,7 @@ bool Game::Update()
 		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
 		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10);
+		Shots[idx_shot].Init(x, y, 56, 20, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
@@ -149,7 +148,7 @@ bool Game::Update()
 	{
 		if (Shots[i].IsAlive())
 		{
-			Shots[i].Move(1, 0);
+			Shots[i].Move(Shots[i].GetShotX(), Shots[i].GetShotY());
 			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
 		}
 	}
@@ -190,11 +189,11 @@ void Game::Draw()
 		}
 	}
 	//(Just 4 testing) Draw the cursor
-	rc.x = mouseX;
+	/*rc.x = mouseX;
 	rc.y = mouseY;
 	rc.w = 32;
 	rc.h = 32;
-	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
+	SDL_RenderCopy(Renderer, img_player, NULL, &rc);*/
 
 
 	//Update screen

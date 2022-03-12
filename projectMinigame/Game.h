@@ -14,7 +14,7 @@
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
 #define MAX_KEYS		256
-#define MAX_SHOTS		32
+#define MAX_SHOTS		128
 
 class Game
 {
@@ -36,8 +36,10 @@ private:
 	SDL_Texture *img_background, *img_player, *img_shot;
 
 	Uint32 buttons; 
+
 	Entity Player, Shots[MAX_SHOTS], Scene;
-	int idx_shot;ç
+	int idx_shot;
+
 	int mouseX, mouseY;
 
 	bool god_mode;
