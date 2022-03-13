@@ -8,7 +8,7 @@ Entity::Entity()
 Entity::~Entity()
 {
 }
-void Entity::Init(int posx, int posy, int w, int h, int s, int posx2, int posy2) 
+void Entity::Init(int posx, int posy, int w, int h, int s, float posx2, float posy2) 
 {
 	x = posx;
 	y = posy;
@@ -35,11 +35,11 @@ int Entity::GetY()
 {
 	return y;
 }
-int Entity::GetShotX()
+float Entity::GetShotX()
 {
 	return x_shot;
 }
-int Entity::GetShotY()
+float Entity::GetShotY()
 {
 	return y_shot;
 }
@@ -60,11 +60,6 @@ bool Entity::IsAlive()
 	return is_alive;
 }
 void Entity::Move(float dx, float dy)
-{
-	x += dx * speed;
-	y += dy * speed;
-}
-void Entity::EMove(float dx, float dy)
 {
 	x += dx * speed;
 	y += dy * speed;

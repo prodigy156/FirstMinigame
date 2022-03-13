@@ -15,6 +15,8 @@
 #define WINDOW_HEIGHT	768
 #define MAX_KEYS		256
 #define MAX_SHOTS		128
+#define MAX_ENEMIES		128
+
 
 class Game
 {
@@ -37,12 +39,14 @@ private:
 
 	Uint32 buttons; 
 
-	Entity Player, Shots[MAX_SHOTS], Scene, Enemy;
+	Entity Player, Shots[MAX_SHOTS], Scene, Enemy[MAX_ENEMIES] ;
 	int idx_shot;
 
 	int mouseX, mouseY;
 
 	bool god_mode;
+
+	bool toggle_enemies;
 
 	enum KEY_STATE { KEY_IDLE, KEY_DOWN, KEY_REPEAT, KEY_UP	};
 	KEY_STATE keys[MAX_KEYS]; 

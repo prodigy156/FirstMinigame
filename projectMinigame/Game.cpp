@@ -42,7 +42,8 @@ bool Game::Init()
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
 	god_mode = false;
 	//Enemy test
-	Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);
+
+	/*Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);*/
 	//Enemy test
 
 	return true;
@@ -125,19 +126,6 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 685) fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0) fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 920) fx = 1;
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN)
-	{
-		int x, y, w, h;
-		Player.GetRect(&x, &y, &w, &h);
-		//size: 56x20
-		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x + 29, y + 3, 56, 20, 10, NULL, NULL);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-		Shots[idx_shot].Init(x + 29, y + 59, 56, 20, 10, NULL, NULL);
-		idx_shot++;
-		idx_shot %= MAX_SHOTS;
-	}
 	if (buttons == SDL_BUTTON_LEFT) {
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
@@ -189,8 +177,8 @@ void Game::Draw()
 	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 	//Draw enemy
-	Enemy.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_Enemy, NULL, &rc);
+	/*Enemy.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	SDL_RenderCopy(Renderer, img_Enemy, NULL, &rc);*/
 	// Draw enemy
 	//Draw shots
 	for (int i = 0; i < MAX_SHOTS; ++i)
@@ -203,25 +191,25 @@ void Game::Draw()
 		}
 	}
 	//Enemy Movement
-	if (Player.GetX() != Enemy.GetX() || Player.GetY() != Enemy.GetY()) {
+	/*if (Player.GetX() != Enemy.GetX() || Player.GetY() != Enemy.GetY()) {
 		float fx = 0, fy = 0;
 			if (Player.GetX() < Enemy.GetX()) {
 				fx = -1;
-				Enemy.EMove(fx, fy);
+				Enemy.Move(fx, fy);
 			}
 			if (Player.GetX() > Enemy.GetX()) {
 				fx = 1;
-				Enemy.EMove(fx, fy);
+				Enemy.Move(fx, fy);
 			}
 			if (Player.GetY() < Enemy.GetY()) {
 				fy = -1;
-				Enemy.EMove(fx, fy);
+				Enemy.Move(fx, fy);
 			}
 			if (Player.GetY() > Enemy.GetY()) {
 				fy = 1;
-				Enemy.EMove(fx, fy);
+				Enemy.Move(fx, fy);
 			}
-	}
+	}*/
 	//Enemy Movement
 
 	//(Just 4 testing) Draw the cursor
