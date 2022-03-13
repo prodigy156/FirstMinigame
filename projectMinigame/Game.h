@@ -33,11 +33,11 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player, *img_shot;
+	SDL_Texture *img_background, *img_player, *img_shot, *img_Enemy;
 
 	Uint32 buttons; 
 
-	Entity Player, Shots[MAX_SHOTS], Scene;
+	Entity Player, Shots[MAX_SHOTS], Scene, Enemy;
 	int idx_shot;
 
 	int mouseX, mouseY;

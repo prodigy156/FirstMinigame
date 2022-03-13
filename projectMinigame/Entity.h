@@ -16,6 +16,7 @@ public:
 	void ShutDown(); 
 	bool IsAlive();
 	void Move(float dx, float dy);
+	void EMove(float dx, float dy);
 
 private:
 	float x, y;

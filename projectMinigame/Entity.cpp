@@ -59,8 +59,12 @@ bool Entity::IsAlive()
 {
 	return is_alive;
 }
-
 void Entity::Move(float dx, float dy)
+{
+	x += dx * speed;
+	y += dy * speed;
+}
+void Entity::EMove(float dx, float dy)
 {
 	x += dx * speed;
 	y += dy * speed;
