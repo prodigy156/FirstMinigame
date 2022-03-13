@@ -1,6 +1,5 @@
 #include "Entity.h"
 
-
 Entity::Entity()
 {
 	is_alive = false;
