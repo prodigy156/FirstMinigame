@@ -129,43 +129,34 @@ bool Game::Update()
 		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
 		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x, y, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
+		Shots[idx_shot].Init(x + 26, y + 50, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
 
-	if (toggle_enemies == true && idx_Enemy < (MAX_ENEMIES-1)) {
+	if (toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1)) {
 		int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
 		if (val1 == 0 && val2 == 0) {
 			x = -50;
 			y = val4;
-			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
-			idx_Enemy++;
-			idx_Enemy %= MAX_ENEMIES;
 		}
 		if (val1 == 1 && val2 == 0) {
 			x = WINDOW_WIDTH;
 			y = val4;
-			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
-			idx_Enemy++;
-			idx_Enemy %= MAX_ENEMIES;
 		}
 		if (val1 == 0 && val2 == 1) {
 			y = -50;
 			x = val3;
-			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
-			idx_Enemy++;
-			idx_Enemy %= MAX_ENEMIES;
 		}
 		if (val1 == 1 && val2 == 1) {
 			y = WINDOW_HEIGHT;
 			x = val3;
-			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
-			idx_Enemy++;
-			idx_Enemy %= MAX_ENEMIES;
 		}
+		Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+		idx_Enemy++;
+		idx_Enemy %= MAX_ENEMIES;
 	}
-	
+
 	//Logic
 	//Player update
 	Player.Move(fx, fy);
@@ -179,17 +170,13 @@ bool Game::Update()
 		}
 	}
 	//Enemy update
-		for (int i = 0; i < idx_Enemy; i++) {
-			int aux = 0;
-			if (aux == 0) {
-				Enemy[i].Move(((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)), (Player.GetY() - Enemy[i].GetY()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)));
-			}
-			//if ((Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) <= 20 || (Player.GetY()) - (Enemy[i].GetY()) <= 20 || (Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) >= -20 || (Player.GetY()) - (Enemy[i].GetY()) >= -20) {
-			//	//Enemy[i].Move(Enemy[i].GetX(), Enemy[i].GetY());
-			//	Enemy[i].Stop();
-			//	aux = 1;
-			//}
+	for (int i = 0; i < idx_Enemy; i++) {
+
+		if (Enemy[i].IsAlive())
+		{
+			Enemy[i].Move(((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)), (Player.GetY() - Enemy[i].GetY()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)));
 		}
+	}
 		
 	return false;
 }
