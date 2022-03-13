@@ -35,7 +35,7 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(20, WINDOW_HEIGHT >> 1, 104, 82, 5, NULL, NULL);
+	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 5, NULL, NULL);
 	idx_shot = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
@@ -43,7 +43,7 @@ bool Game::Init()
 	god_mode = false;
 	//Enemy test
 
-	/*Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);*/
+	//Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);
 	//Enemy test
 
 	return true;
@@ -60,7 +60,7 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("spaceship.png"));
+	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(South).png"));
 	if (img_player == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
@@ -131,15 +131,13 @@ bool Game::Update()
 		Player.GetRect(&x, &y, &w, &h);
 		//size: 56x20
 		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x, y, 56, 20, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
+		Shots[idx_shot].Init(x, y, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
 	
 	//Logic
-	//Scene scroll
-	//Scene.Move(-1, 0);
-	//if (Scene.GetX() <= -Scene.GetWidth())	Scene.SetX(0);
+	
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -176,10 +174,7 @@ void Game::Draw()
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-	//Draw enemy
-	/*Enemy.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_Enemy, NULL, &rc);*/
-	// Draw enemy
+	
 	//Draw shots
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
@@ -190,35 +185,6 @@ void Game::Draw()
 			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		}
 	}
-	//Enemy Movement
-	/*if (Player.GetX() != Enemy.GetX() || Player.GetY() != Enemy.GetY()) {
-		float fx = 0, fy = 0;
-			if (Player.GetX() < Enemy.GetX()) {
-				fx = -1;
-				Enemy.Move(fx, fy);
-			}
-			if (Player.GetX() > Enemy.GetX()) {
-				fx = 1;
-				Enemy.Move(fx, fy);
-			}
-			if (Player.GetY() < Enemy.GetY()) {
-				fy = -1;
-				Enemy.Move(fx, fy);
-			}
-			if (Player.GetY() > Enemy.GetY()) {
-				fy = 1;
-				Enemy.Move(fx, fy);
-			}
-	}*/
-	//Enemy Movement
-
-	//(Just 4 testing) Draw the cursor
-	/*rc.x = mouseX;
-	rc.y = mouseY;
-	rc.w = 32;
-	rc.h = 32;
-	SDL_RenderCopy(Renderer, img_player, NULL, &rc);*/
-
 
 	//Update screen
 	SDL_RenderPresent(Renderer);

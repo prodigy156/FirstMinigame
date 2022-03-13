@@ -39,7 +39,7 @@ private:
 
 	Uint32 buttons; 
 
-	Entity Player, Shots[MAX_SHOTS], Scene, Enemy[MAX_ENEMIES] ;
+	Entity Player, Shots[MAX_SHOTS], Scene, Enemy[MAX_ENEMIES];
 	int idx_shot;
 
 	int mouseX, mouseY;
