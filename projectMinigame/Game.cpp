@@ -166,11 +166,45 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0) fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 920) fx = 1;
 	if (buttons == SDL_BUTTON_LEFT) {
+
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
-		//size: 56x20
-		//offset from player: dx, dy = [(29, 3), (29, 59)]
-		Shots[idx_shot].Init(x + 26, y + 50, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
+	
+		int offsetX, offsetY;
+
+		if ((fabs(Player.GetX() - mouseX) <= 50) && ((Player.GetY() - mouseY) > 0)) {
+			offsetX = 26;
+			offsetY = 12;
+		}
+		else if ((fabs(Player.GetX() - mouseX) <= 50) && ((Player.GetY() - mouseY) < 0)) {
+			offsetX = 26;
+			offsetY = 50;
+		}
+		else if (((Player.GetX() - mouseX) > 0) && (fabs(Player.GetY() - mouseY) <= 50)) {
+			offsetX = 0;
+			offsetY = 38;
+		}
+		else if (((Player.GetX() - mouseX) < 0) && (fabs(Player.GetY() - mouseY) <= 50)) {
+			offsetX = 54;
+			offsetY = 38;
+		}
+		else if (((Player.GetX() - mouseX) > 0) && (((Player.GetY() - mouseY) > 0))) {
+			offsetX = 8;
+			offsetY = 24;
+		}
+		else if (((Player.GetX() - mouseX) < 0) && (((Player.GetY() - mouseY) > 0))) {
+			offsetX = 46;
+			offsetY = 24;
+		}
+		else if (((Player.GetX() - mouseX) > 0) && (((Player.GetY() - mouseY) < 0))) {
+			offsetX = 8;
+			offsetY = 48;
+		}
+		else if (((Player.GetX() - mouseX) < 0) && (((Player.GetY() - mouseY) < 0))) {
+			offsetX = 46;
+			offsetY = 48;
+		}
+		Shots[idx_shot].Init(x + offsetX, y + offsetY, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
