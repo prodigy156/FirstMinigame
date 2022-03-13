@@ -43,14 +43,6 @@ bool Game::Init()
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
 	god_mode = false;
-<<<<<<< HEAD
-=======
-	//Enemy test
-
-	//Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);
-	//Enemy test
-
->>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
 	return true;
 }
 bool Game::LoadImages()
@@ -175,14 +167,6 @@ bool Game::Update()
 	}
 	
 	//Logic
-<<<<<<< Updated upstream
-	
-=======
-<<<<<<< HEAD
-=======
-	
->>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
->>>>>>> Stashed changes
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -200,11 +184,11 @@ bool Game::Update()
 			if (aux == 0) {
 				Enemy[i].Move(((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)), (Player.GetY() - Enemy[i].GetY()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)));
 			}
-			if ((Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) <= 20 || (Player.GetY()) - (Enemy[i].GetY()) <= 20 || (Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) >= -20 || (Player.GetY()) - (Enemy[i].GetY()) >= -20) {
-				//Enemy[i].Move(Enemy[i].GetX(), Enemy[i].GetY());
-				Enemy[i].Stop();
-				aux = 1;
-			}
+			//if ((Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) <= 20 || (Player.GetY()) - (Enemy[i].GetY()) <= 20 || (Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) >= -20 || (Player.GetY()) - (Enemy[i].GetY()) >= -20) {
+			//	//Enemy[i].Move(Enemy[i].GetX(), Enemy[i].GetY());
+			//	Enemy[i].Stop();
+			//	aux = 1;
+			//}
 		}
 		
 	return false;
@@ -231,15 +215,7 @@ void Game::Draw()
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
-<<<<<<< Updated upstream
-	
-=======
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
->>>>>>> Stashed changes
 	//Draw shots
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
@@ -250,9 +226,7 @@ void Game::Draw()
 			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		}
 	}
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
 	//Draw enemies
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
@@ -264,16 +238,6 @@ void Game::Draw()
 		}
 	}
 
-	//(Just 4 testing) Draw the cursor
-	/*rc.x = mouseX;
-	rc.y = mouseY;
-	rc.w = 32;
-	rc.h = 32;
-	SDL_RenderCopy(Renderer, img_player, NULL, &rc);*/
-
-=======
->>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
->>>>>>> Stashed changes
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
