@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 Game::Game() {}
 Game::~Game(){}
@@ -41,11 +43,14 @@ bool Game::Init()
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
 	god_mode = false;
+<<<<<<< HEAD
+=======
 	//Enemy test
 
 	//Enemy.Init(500, WINDOW_HEIGHT >> 1, 45, 64, 1, NULL, NULL);
 	//Enemy test
 
+>>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
 	return true;
 }
 bool Game::LoadImages()
@@ -122,6 +127,7 @@ bool Game::Update()
 	float fx = 0, fy = 0;
 	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)	return true;
 	if (keys[SDL_SCANCODE_F1] == KEY_DOWN)		god_mode = !god_mode;
+	if (keys[SDL_SCANCODE_F2] == KEY_DOWN)		toggle_enemies = !toggle_enemies;
 	if (keys[SDL_SCANCODE_W] == KEY_REPEAT && Player.GetY() > 0) fy = -1;
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 685) fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0) fx = -1;
@@ -135,9 +141,48 @@ bool Game::Update()
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
+
+	if (toggle_enemies == true && idx_Enemy < (MAX_ENEMIES-1)) {
+		int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
+		if (val1 == 0 && val2 == 0) {
+			x = -50;
+			y = val4;
+			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+			idx_Enemy++;
+			idx_Enemy %= MAX_ENEMIES;
+		}
+		if (val1 == 1 && val2 == 0) {
+			x = WINDOW_WIDTH;
+			y = val4;
+			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+			idx_Enemy++;
+			idx_Enemy %= MAX_ENEMIES;
+		}
+		if (val1 == 0 && val2 == 1) {
+			y = -50;
+			x = val3;
+			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+			idx_Enemy++;
+			idx_Enemy %= MAX_ENEMIES;
+		}
+		if (val1 == 1 && val2 == 1) {
+			y = WINDOW_HEIGHT;
+			x = val3;
+			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+			idx_Enemy++;
+			idx_Enemy %= MAX_ENEMIES;
+		}
+	}
 	
 	//Logic
+<<<<<<< Updated upstream
 	
+=======
+<<<<<<< HEAD
+=======
+	
+>>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
+>>>>>>> Stashed changes
 	//Player update
 	Player.Move(fx, fy);
 	//Shots update
@@ -149,6 +194,18 @@ bool Game::Update()
 			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
 		}
 	}
+	//Enemy update
+		for (int i = 0; i < idx_Enemy; i++) {
+			int aux = 0;
+			if (aux == 0) {
+				Enemy[i].Move(((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)), (Player.GetY() - Enemy[i].GetY()) / sqrt(pow(Player.GetY() - Enemy[i].GetY(), 2) + pow((Player.GetX() + PLAYER_CENTER) - Enemy[i].GetX(), 2)));
+			}
+			if ((Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) <= 20 || (Player.GetY()) - (Enemy[i].GetY()) <= 20 || (Player.GetX() + PLAYER_CENTER) - (Enemy[i].GetX()) >= -20 || (Player.GetY()) - (Enemy[i].GetY()) >= -20) {
+				//Enemy[i].Move(Enemy[i].GetX(), Enemy[i].GetY());
+				Enemy[i].Stop();
+				aux = 1;
+			}
+		}
 		
 	return false;
 }
@@ -174,7 +231,15 @@ void Game::Draw()
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
 	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
 	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+<<<<<<< Updated upstream
 	
+=======
+<<<<<<< HEAD
+
+=======
+	
+>>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
+>>>>>>> Stashed changes
 	//Draw shots
 	for (int i = 0; i < MAX_SHOTS; ++i)
 	{
@@ -185,6 +250,30 @@ void Game::Draw()
 			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		}
 	}
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+	//Draw enemies
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		if (Enemy[i].IsAlive())
+		{
+			Enemy[i].GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+			SDL_RenderCopy(Renderer, img_Enemy, NULL, &rc);
+			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+		}
+	}
+
+	//(Just 4 testing) Draw the cursor
+	/*rc.x = mouseX;
+	rc.y = mouseY;
+	rc.w = 32;
+	rc.h = 32;
+	SDL_RenderCopy(Renderer, img_player, NULL, &rc);*/
+
+=======
+>>>>>>> f59315fa2ff4d8457955c2b59b16dd271ce078a3
+>>>>>>> Stashed changes
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
