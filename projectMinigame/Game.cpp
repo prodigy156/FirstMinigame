@@ -57,8 +57,43 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_player = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(South).png"));
-	if (img_player == NULL) {
+	img_player_S = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(South).png"));
+	if (img_player_S == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_SE = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(South-east).png"));
+	if (img_player_SE == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_SW = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(South-west).png"));
+	if (img_player_SW == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_NW = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(North-west).png"));
+	if (img_player_NW == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_NE = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(North-east).png"));
+	if (img_player_NE == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_N = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(North).png"));
+	if (img_player_N == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_E = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(East).png"));
+	if (img_player_E == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_player_W = SDL_CreateTextureFromSurface(Renderer, IMG_Load("lil_guy(West).png"));
+	if (img_player_W == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
@@ -80,7 +115,14 @@ void Game::Release()
 {
 	//Release images
 	SDL_DestroyTexture(img_background);
-	SDL_DestroyTexture(img_player);
+	SDL_DestroyTexture(img_player_S);
+	SDL_DestroyTexture(img_player_W);
+	SDL_DestroyTexture(img_player_E);
+	SDL_DestroyTexture(img_player_NW);
+	SDL_DestroyTexture(img_player_NE);
+	SDL_DestroyTexture(img_player_N);
+	SDL_DestroyTexture(img_player_SW);
+	SDL_DestroyTexture(img_player_SE);
 	SDL_DestroyTexture(img_shot);
 	SDL_DestroyTexture(img_Enemy);
 	IMG_Quit();
@@ -107,7 +149,6 @@ bool Game::Input()
 	}
 
 	buttons = SDL_GetMouseState(&mouseX, &mouseY);
-
 	return true;
 }
 bool Game::Update()
@@ -200,8 +241,39 @@ void Game::Draw()
 	
 	//Draw player
 	Player.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_player, NULL, &rc);
-	if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	if ((fabs(Player.GetX() - mouseX) <= 50) && ((Player.GetY() - mouseY) > 0)) {
+		SDL_RenderCopy(Renderer, img_player_N, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if ((fabs(Player.GetX() - mouseX) <= 50) && ((Player.GetY() - mouseY) < 0)) {
+		SDL_RenderCopy(Renderer, img_player_S, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX() - mouseX) > 0) && (fabs(Player.GetY() - mouseY) <= 50)) {
+		SDL_RenderCopy(Renderer, img_player_W, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX() - mouseX) < 0) && (fabs(Player.GetY() - mouseY) <= 50)) {
+		SDL_RenderCopy(Renderer, img_player_E, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX()-mouseX)>0) && (((Player.GetY() - mouseY)>0))) {
+		SDL_RenderCopy(Renderer, img_player_NW, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX() - mouseX) < 0) && (((Player.GetY() - mouseY) > 0))) {
+		SDL_RenderCopy(Renderer, img_player_NE, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX() - mouseX) > 0) && (((Player.GetY() - mouseY) < 0))) {
+		SDL_RenderCopy(Renderer, img_player_SW, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	else if (((Player.GetX() - mouseX) < 0) && (((Player.GetY() - mouseY) < 0))) {
+		SDL_RenderCopy(Renderer, img_player_SE, NULL, &rc);
+		if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
+	}
+	
 
 	//Draw shots
 	for (int i = 0; i < MAX_SHOTS; ++i)
