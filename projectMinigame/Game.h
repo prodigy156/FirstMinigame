@@ -16,7 +16,7 @@
 #define MAX_KEYS		256
 #define MAX_SHOTS		128
 #define MAX_ENEMIES		15
-#define PLAYER_CENTER   52
+#define PLAYER_CENTER   20
 
 
 class Game
