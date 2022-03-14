@@ -5,6 +5,7 @@
 
 Game::Game() {}
 Game::~Game(){}
+int Deaths = 0, counter = 0;
 
 bool Game::Init()
 {
@@ -153,7 +154,7 @@ bool Game::Input()
 }
 bool Game::Update()
 {
-	int waves = 0;
+	bool waves = true;
 	//Read Input
 	if (!Input())	return true;
 
@@ -210,10 +211,7 @@ bool Game::Update()
 		idx_shot %= MAX_SHOTS;
 	}
 	//Enemy Init
-	if (toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1) && waves == 0) {
-		if (waves == 0) {
-			toggle_enemies = false;
-		}
+	if ((toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1)) && (waves == true)) {
 		int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
 			if (val1 == 0 && val2 == 0) {
 				x = -50;
@@ -234,7 +232,24 @@ bool Game::Update()
 			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
 			idx_Enemy++;
 			idx_Enemy %= MAX_ENEMIES;
+			counter++;
 	}
+	if (counter == 1) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 1) {
+		toggle_enemies = true;
+	}
+	if (counter == 3) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 3) {
+		toggle_enemies = true;
+	}
+	if (counter == 5) {
+		toggle_enemies = false;
+	}
+
 
 	//Logic
 	//Player update
@@ -264,7 +279,7 @@ bool Game::Update()
 				Shots[j].ShutDown();
 				if (Enemy[i].GetEnemyHP() <= 0) {
 					Enemy[i].ShutDown();
-					waves += 1;
+					Deaths++;
 					Enemy[i].ResetEnemyPos();
 				}
 			}
