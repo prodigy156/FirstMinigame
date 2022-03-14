@@ -11,6 +11,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s, float posx2, float po
 {
 	x = posx;
 	y = posy;
+	HP = 10000;
 	width = w;
 	height = h;
 	speed = s;
@@ -66,4 +67,17 @@ void Entity::Move(float dx, float dy)
 void Entity::Stop()
 {
 	speed = 0;
+}
+int Entity::GetEnemyHP()
+{
+	return HP;
+}
+void Entity::EnemyHPloss(int dmg)
+{
+	HP -= dmg;
+}
+void Entity::ResetEnemyPos()
+{
+	x = -100;
+	y = -100;
 }
