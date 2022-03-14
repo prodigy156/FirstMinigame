@@ -38,7 +38,7 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 2, NULL, NULL);
+	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 3, NULL, NULL);
 	idx_shot = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
@@ -167,7 +167,7 @@ bool Game::Update()
 	if (keys[SDL_SCANCODE_S] == KEY_REPEAT && Player.GetY() < 685) fy = 1;
 	if (keys[SDL_SCANCODE_A] == KEY_REPEAT && Player.GetX() > 0) fx = -1;
 	if (keys[SDL_SCANCODE_D] == KEY_REPEAT && Player.GetX() < 920) fx = 1;
-	if (buttons == SDL_BUTTON_LEFT) {
+	if (buttons == SDL_BUTTON_LEFT && bullet_delay_c == 0) {
 
 		int x, y, w, h;
 		Player.GetRect(&x, &y, &w, &h);
@@ -209,6 +209,13 @@ bool Game::Update()
 		Shots[idx_shot].Init(x + offsetX, y + offsetY, 12, 12, 10, (mouseX - (x + offsetX)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)), (mouseY - (y + offsetY)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
+	}
+	//Bullet Delay
+	if (bullet_delay_c < BULLET_DELAY) {
+		bullet_delay_c++;
+	}
+	else {
+		bullet_delay_c = 0;
 	}
 	//Enemy Init
 	if ((toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1)) && (waves == true)) {
@@ -307,7 +314,11 @@ bool Game::Update()
 	//Enemy kill
 	for (int i = 0; i < idx_Enemy; i++) {
 		for (int j = 0; j < idx_shot; j++) {
-			if (((Enemy[i].GetX() - Shots[j].GetX()) <= 40) && ((Enemy[i].GetX() - Shots[j].GetX()) >= -40) && ((Enemy[i].GetY() - Shots[j].GetY()) <= 40) && ((Enemy[i].GetY() - Shots[j].GetY()) >= -40)) {
+			int enemy_x, enemy_y, enemy_w, enemy_h;
+			Enemy[i].GetRect(&enemy_x, &enemy_y, &enemy_w, &enemy_h);
+			int bullet_x, bullet_y, bullet_w, bullet_h;
+			Shots[j].GetRect(&bullet_x, &bullet_y, &bullet_w, &bullet_h);
+			if (((bullet_x >= enemy_x && bullet_x <= enemy_w + enemy_x) || (bullet_w + bullet_x >= enemy_x && bullet_w + bullet_x <= enemy_w + enemy_x)) && ((bullet_y >= enemy_y && bullet_y <= enemy_h + enemy_y ) || (bullet_h + bullet_y>= enemy_y && bullet_h + bullet_y <= enemy_h + enemy_y)))  {
 				Enemy[i].EnemyHPloss(2);
 				Shots[j].ShutDown();
 				if (Enemy[i].GetEnemyHP() <= 0) {
