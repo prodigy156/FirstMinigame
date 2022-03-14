@@ -5,7 +5,7 @@
 
 Game::Game() {}
 Game::~Game(){}
-int Deaths = 0, counter = 0;
+int Deaths = 0, counter = 0, Enemy_delay = 0;
 
 bool Game::Init()
 {
@@ -260,7 +260,7 @@ bool Game::Update()
 		bullet_delay_c = 0;
 	}
 	//Enemy Init
-	if ((toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1)) && (waves == true)) {
+	if ((toggle_enemies == true && idx_Enemy < (MAX_ENEMIES - 1)) && (Enemy_delay == 0)) {
 		int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
 			if (val1 == 0 && val2 == 0) {
 				x = -50;
@@ -283,56 +283,14 @@ bool Game::Update()
 			idx_Enemy %= MAX_ENEMIES;
 			counter++;
 	}
-	//Enemies waves
-	if (counter == 1) {
-		toggle_enemies = false;
+	//Enemy Delay
+	if (Enemy_delay < ENEMY_DELAY) {
+		Enemy_delay++;
 	}
-	if (Deaths == 1) {
-		toggle_enemies = true;
+	else {
+		Enemy_delay = 0;
 	}
-	if (counter == 3) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 3) {
-		toggle_enemies = true;
-	}
-	if (counter == 5) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 5) {
-		toggle_enemies = true;
-	}
-	if (counter == 8) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 8) {
-		toggle_enemies = true;
-	}
-	if (counter == 11) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 11) {
-		toggle_enemies = true;
-	}
-	if (counter == 15) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 15) {
-		toggle_enemies = true;
-	}
-	if (counter == 20) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 20) {
-		toggle_enemies = true;
-	}
-	if (counter == 26) {
-		toggle_enemies = false;
-	}
-	if (Deaths == 26) {
-		toggle_enemies = true;
-	}
-
+	
 	//Logic
 	//Player update
 	Player.Move(fx, fy);
@@ -343,6 +301,10 @@ bool Game::Update()
 		{
 			Shots[i].Move(Shots[i].GetShotX(), Shots[i].GetShotY());
 			if (Shots[i].GetX() > WINDOW_WIDTH)	Shots[i].ShutDown();
+			if (Shots[i].GetX() < -WINDOW_WIDTH)	Shots[i].ShutDown();
+			if (Shots[i].GetY() > WINDOW_HEIGHT)	Shots[i].ShutDown();
+			if (Shots[i].GetY() < -WINDOW_HEIGHT)	Shots[i].ShutDown();
+	
 		}
 	}
 	//Enemy update
@@ -363,6 +325,7 @@ bool Game::Update()
 			if (((bullet_x >= enemy_x && bullet_x <= enemy_w + enemy_x) || (bullet_w + bullet_x >= enemy_x && bullet_w + bullet_x <= enemy_w + enemy_x)) && ((bullet_y >= enemy_y && bullet_y <= enemy_h + enemy_y ) || (bullet_h + bullet_y>= enemy_y && bullet_h + bullet_y <= enemy_h + enemy_y)))  {
 				Enemy[i].EnemyHPloss(2);
 				Shots[j].ShutDown();
+				Shots[j].ResetEnemyPos();
 				if (Enemy[i].GetEnemyHP() <= 0) {
 					Enemy[i].ShutDown();
 					Deaths++;

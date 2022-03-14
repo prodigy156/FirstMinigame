@@ -11,7 +11,7 @@ void Entity::Init(int posx, int posy, int w, int h, int s, float posx2, float po
 {
 	x = posx;
 	y = posy;
-	HP = 10000;
+	HP = 40;
 	width = w;
 	height = h;
 	speed = s;
