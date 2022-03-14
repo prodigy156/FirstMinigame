@@ -132,7 +132,7 @@ bool Game::LoadImages()
 		return false;
 	}
 	//Enemy texture
-	img_Enemy = SDL_CreateTextureFromSurface(Renderer, IMG_Load("Enemy.png"));
+	img_Enemy = SDL_CreateTextureFromSurface(Renderer, IMG_Load("GreenEnemy(south).png"));
 	if (img_Enemy == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
@@ -277,7 +277,7 @@ bool Game::Update()
 				y = WINDOW_HEIGHT;
 				x = val3;
 			}
-			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
+			Enemy[idx_Enemy].Init(x, y, 32, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
 			idx_Enemy++;
 			idx_Enemy %= MAX_ENEMIES;
 	}
