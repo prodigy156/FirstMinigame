@@ -6,8 +6,8 @@
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
-#include "SDL_Mixer/include/SDL_Mixer.h"
-#pragma comment( lib, "SDL_Mixer/libx86/SDL2_MIxer.lib" )
+#include "SDL_Mixer/include/SDL_mixer.h"
+#pragma comment( lib, "SDL_Mixer/libx86/SDL2_mixer.lib" )
 
 #include "Entity.h"
 
