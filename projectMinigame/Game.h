@@ -39,10 +39,10 @@ public:
 private:
 	SDL_Window *Window;
 	SDL_Renderer *Renderer;
-	SDL_Texture *img_background, *img_player_N, * img_player_NE, * img_player_NW, * img_player_W, * img_player_SW, * img_player_S, * img_player_SE, * img_player_E, *img_shot, *img_Enemy;
+	SDL_Texture *img_background, *img_player_N, * img_player_NE, * img_player_NW, * img_player_W, * img_player_SW, * img_player_S, * img_player_SE, * img_player_E, *img_shot, *img_Enemy, * img_One,* img_Zero;
 	Uint32 buttons; 
 
-	Entity Player, Shots[MAX_SHOTS], Scene, Enemy[MAX_ENEMIES];
+	Entity Player, Shots[MAX_SHOTS], Scene, Enemy[MAX_ENEMIES],Score;
 	int idx_shot;
 	int idx_Enemy;
 

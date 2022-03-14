@@ -59,6 +59,7 @@ bool Game::Init()
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
+	Score.Init(50, 678, 64, 64, 0, NULL, NULL);
 	god_mode = false;
 	return true;
 }
@@ -131,6 +132,17 @@ bool Game::LoadImages()
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
+	//puntuacion
+	img_Zero = SDL_CreateTextureFromSurface(Renderer, IMG_Load("0.png"));
+	if (img_Zero == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_One = SDL_CreateTextureFromSurface(Renderer, IMG_Load("1.png"));
+	if (img_One == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
 	//Enemy texture
 	img_Enemy = SDL_CreateTextureFromSurface(Renderer, IMG_Load("GreenEnemy(south).png"));
 	if (img_Enemy == NULL) {
@@ -154,6 +166,8 @@ void Game::Release()
 	SDL_DestroyTexture(img_player_SE);
 	SDL_DestroyTexture(img_shot);
 	SDL_DestroyTexture(img_Enemy);
+	SDL_DestroyTexture(img_One);
+
 	IMG_Quit();
 	
 	// Free Audios
@@ -408,7 +422,11 @@ void Game::Draw()
 			if (god_mode) SDL_RenderDrawRect(Renderer, &rc);
 		}
 	}
-
+	//Draw score
+	Score.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	SDL_RenderCopy(Renderer, img_Zero, NULL, &rc);
+	/*Score.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	SDL_RenderCopy(Renderer, img_One, NULL, &rc);*/
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
