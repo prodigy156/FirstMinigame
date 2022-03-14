@@ -234,6 +234,7 @@ bool Game::Update()
 			idx_Enemy %= MAX_ENEMIES;
 			counter++;
 	}
+	//Enemies waves
 	if (counter == 1) {
 		toggle_enemies = false;
 	}
@@ -248,6 +249,15 @@ bool Game::Update()
 	}
 	if (counter == 5) {
 		toggle_enemies = false;
+	}
+	if (Deaths == 5) {
+		toggle_enemies = true;
+	}
+	if (counter == 8) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 8) {
+		toggle_enemies = true;
 	}
 
 
