@@ -21,11 +21,13 @@ public:
 	void EnemyHPloss(int dmg);
 	void ResetEnemyPos();
 
+
 private:
 	float x, y;
 	int width, height, HP;
 	float speed;
 	bool is_alive;
 	float x_shot, y_shot; //Position for bullets to travel to (should be given as (y2-y1) / (x2-x1))
+	
 };
 

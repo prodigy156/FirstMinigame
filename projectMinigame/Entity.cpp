@@ -81,3 +81,5 @@ void Entity::ResetEnemyPos()
 	x = -100;
 	y = -100;
 }
+
+

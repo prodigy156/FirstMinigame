@@ -59,7 +59,9 @@ bool Game::Init()
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
 	Scene.Init(0, 0, w, WINDOW_HEIGHT, 4, NULL, NULL);
-	Score.Init(50, 678, 64, 64, 0, NULL, NULL);
+	Score1.Init(50, 678, 64, 64, 0, NULL, NULL);
+	Score2.Init(100, 678, 64, 64, 0, NULL, NULL);
+
 	god_mode = false;
 	return true;
 }
@@ -133,13 +135,54 @@ bool Game::LoadImages()
 		return false;
 	}
 	//puntuacion
+
 	img_Zero = SDL_CreateTextureFromSurface(Renderer, IMG_Load("0.png"));
 	if (img_Zero == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
-	img_One = SDL_CreateTextureFromSurface(Renderer, IMG_Load("1.png"));
+	img_One = SDL_CreateTextureFromSurface(Renderer, IMG_Load("1,1.png"));
 	if (img_One == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Two = SDL_CreateTextureFromSurface(Renderer, IMG_Load("2.png"));
+	if (img_Two == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Three = SDL_CreateTextureFromSurface(Renderer, IMG_Load("3.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Four = SDL_CreateTextureFromSurface(Renderer, IMG_Load("4.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Five = SDL_CreateTextureFromSurface(Renderer, IMG_Load("5.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Six = SDL_CreateTextureFromSurface(Renderer, IMG_Load("6.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Seven = SDL_CreateTextureFromSurface(Renderer, IMG_Load("7.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Eight = SDL_CreateTextureFromSurface(Renderer, IMG_Load("8.png"));
+	if (img_Three == NULL) {
+		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
+		return false;
+	}
+	img_Nine = SDL_CreateTextureFromSurface(Renderer, IMG_Load("9.png"));
+	if (img_Nine == NULL) {
 		SDL_Log("CreateTextureFromSurface failed: %s\n", SDL_GetError());
 		return false;
 	}
@@ -167,6 +210,19 @@ void Game::Release()
 	SDL_DestroyTexture(img_shot);
 	SDL_DestroyTexture(img_Enemy);
 	SDL_DestroyTexture(img_One);
+	SDL_DestroyTexture(img_Zero);
+	SDL_DestroyTexture(img_Two);
+	SDL_DestroyTexture(img_Three);
+	SDL_DestroyTexture(img_Nine);
+	SDL_DestroyTexture(img_Eight);
+	SDL_DestroyTexture(img_Four);
+	SDL_DestroyTexture(img_Seven);
+	SDL_DestroyTexture(img_Six);
+	SDL_DestroyTexture(img_Five);
+
+
+
+
 
 	IMG_Quit();
 	
@@ -189,7 +245,7 @@ bool Game::Input()
 	SDL_Event event;
 	if (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT)	return false;
+		if (event.type == SDL_QUIT || score== 10)	return false;
 	}
 
 	SDL_PumpEvents();
@@ -338,18 +394,36 @@ bool Game::Update()
 				Enemy[i].EnemyHPloss(2);
 				Shots[j].ShutDown();
 				Shots[j].ResetEnemyPos();
-				if (Enemy[i].GetEnemyHP() <= 0) {
-					Enemy[i].ShutDown();
-					Enemy[i].ResetEnemyPos();
 				}
 			}
+		if (Enemy[i].GetEnemyHP() <= 0) {
+			Enemy[i].ShutDown();
+			Enemy[i].ResetEnemyPos();
+			if (Dead(i))
+				score++;
 		}
 	}
 	return false;
 }
+
+bool Game::Dead(int _num)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		if (enemyDead[i] == _num)
+		{
+			return false;
+		}
+	}
+	enemyDead[scoreDead] = _num;
+	scoreDead++;
+	return true;
+}
+
 void Game::Draw()
 {
 	SDL_Rect rc;
+	SDL_Rect rc2;
 
 	//Set the color used for drawing operations
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
@@ -423,10 +497,43 @@ void Game::Draw()
 		}
 	}
 	//Draw score
-	Score.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_Zero, NULL, &rc);
-	/*Score.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
-	SDL_RenderCopy(Renderer, img_One, NULL, &rc);*/
+	Score1.GetRect(&rc.x, &rc.y, &rc.w, &rc.h);
+	Score2.GetRect(&rc2.x, &rc2.y, &rc2.w, &rc2.h);
+
+	switch (score)
+	{
+	case 0:
+		SDL_RenderCopy(Renderer, img_Zero, NULL, &rc);
+		break;
+	case 1:
+		SDL_RenderCopy(Renderer, img_One, NULL, &rc);
+		break;
+	case 2:
+		SDL_RenderCopy(Renderer, img_Two, NULL, &rc);
+		break;
+	case 3:
+		SDL_RenderCopy(Renderer, img_Three, NULL, &rc);
+		break;
+	case 4:
+		SDL_RenderCopy(Renderer, img_Four, NULL, &rc);
+		break;
+	case 5:
+		SDL_RenderCopy(Renderer, img_Five, NULL, &rc);
+		break;
+	case 6:
+		SDL_RenderCopy(Renderer, img_Six, NULL, &rc);
+		break;
+	case 7:
+		SDL_RenderCopy(Renderer, img_Seven, NULL, &rc);
+		break;
+	case 8:
+		SDL_RenderCopy(Renderer, img_Eight, NULL, &rc);
+		break;
+	case 9:
+		SDL_RenderCopy(Renderer, img_Nine, NULL, &rc);
+		break;
+
+	}
 
 	//Update screen
 	SDL_RenderPresent(Renderer);
