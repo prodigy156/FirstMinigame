@@ -259,7 +259,30 @@ bool Game::Update()
 	if (Deaths == 8) {
 		toggle_enemies = true;
 	}
-
+	if (counter == 11) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 11) {
+		toggle_enemies = true;
+	}
+	if (counter == 15) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 15) {
+		toggle_enemies = true;
+	}
+	if (counter == 20) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 20) {
+		toggle_enemies = true;
+	}
+	if (counter == 26) {
+		toggle_enemies = false;
+	}
+	if (Deaths == 26) {
+		toggle_enemies = true;
+	}
 
 	//Logic
 	//Player update
