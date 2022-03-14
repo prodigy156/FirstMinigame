@@ -5,7 +5,7 @@
 
 Game::Game() {}
 Game::~Game(){}
-int Deaths = 0, counter = 0, Enemy_delay = 0;
+int Enemy_delay = 0;
 
 bool Game::Init()
 {
@@ -193,7 +193,6 @@ bool Game::Input()
 }
 bool Game::Update()
 {
-	bool waves = true;
 	//Read Input
 	if (!Input())	return true;
 
@@ -281,7 +280,6 @@ bool Game::Update()
 			Enemy[idx_Enemy].Init(x, y, 49, 64, 1, (Player.GetX() - x) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)), (Player.GetY() - y) / sqrt(pow(Player.GetY() - y, 2) + pow(Player.GetX() - x, 2)));
 			idx_Enemy++;
 			idx_Enemy %= MAX_ENEMIES;
-			counter++;
 	}
 	//Enemy Delay
 	if (Enemy_delay < ENEMY_DELAY) {
@@ -328,7 +326,6 @@ bool Game::Update()
 				Shots[j].ResetEnemyPos();
 				if (Enemy[i].GetEnemyHP() <= 0) {
 					Enemy[i].ShutDown();
-					Deaths++;
 					Enemy[i].ResetEnemyPos();
 				}
 			}
