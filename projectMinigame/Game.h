@@ -18,7 +18,7 @@
 #define MAX_ENEMIES		128 //This number must be one higher of the desired enemies
 #define PLAYER_CENTER   20
 #define BULLET_DELAY	10
-
+#define MAX_TRACKS		10
 
 class Game
 {
@@ -27,6 +27,7 @@ public:
 	~Game();
 
 	bool Init();
+	bool LoadAudios();
 	bool LoadImages();
 	void Release();
 	
@@ -54,4 +55,10 @@ private:
 
 	enum KEY_STATE { KEY_IDLE, KEY_DOWN, KEY_REPEAT, KEY_UP	};
 	KEY_STATE keys[MAX_KEYS]; 
+
+	Mix_Music* tracks[MAX_TRACKS];
+	int num_tracks;
+
+	Mix_Chunk* sfxs[MAX_SHOTS];
+	int num_sfxs;
 };

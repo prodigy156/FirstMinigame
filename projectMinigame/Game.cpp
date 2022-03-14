@@ -36,6 +36,22 @@ bool Game::Init()
 	if (!LoadImages())
 		return false;
 
+	// Init SDL_Mixer
+	int flags = MIX_INIT_OGG;
+	if (Mix_Init(flags) != flags) {
+		SDL_Log("Failed to init OGG module for SDL_Mixer!\n");
+		SDL_Log("Mix_Init: %s\n", Mix_GetError());
+		return false;
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+		SDL_Log("Failed to init SDL_Mixer!\n");
+		SDL_Log("Mix_OpenAudio: %s\n", Mix_GetError());
+		return false;
+	}
+	if (!LoadAudios())
+		return false;
+
+
 	//Init variables
 	//size: 104x82
 	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 3, NULL, NULL);
@@ -46,6 +62,18 @@ bool Game::Init()
 	god_mode = false;
 	return true;
 }
+
+bool Game::LoadAudios() {
+	num_tracks = 0;
+	tracks[num_tracks++] = Mix_LoadMUS("sample_ogg.ogg");
+
+	Mix_PlayMusic(tracks[0], -1);
+
+	sfxs[num_sfxs++] = Mix_LoadWAV("sample_wav.wav");
+
+	return true;
+}
+
 bool Game::LoadImages()
 {
 	if(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
@@ -128,6 +156,17 @@ void Game::Release()
 	SDL_DestroyTexture(img_Enemy);
 	IMG_Quit();
 	
+	// Free Audios
+	for (int i = 0; i < num_tracks; ++i)
+		Mix_FreeMusic(tracks[i]);
+	for (int i = 0; i < num_sfxs; ++i)
+		Mix_FreeChunk(sfxs[i]);
+
+	// Close SDL_Mixer
+	Mix_CloseAudio();
+	while (Mix_Init(0))
+		Mix_Quit();
+
 	//Clean up all SDL initialized subsystems
 	SDL_Quit();
 }
@@ -209,6 +248,9 @@ bool Game::Update()
 		Shots[idx_shot].Init(x + offsetX, y + offsetY, 12, 12, 10, (mouseX - (x + offsetX)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)), (mouseY - (y + offsetY)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
+
+		// Play a single Sound
+		Mix_PlayChannel(-1, sfxs[0], 0);
 	}
 	//Bullet Delay
 	if (bullet_delay_c < BULLET_DELAY) {
