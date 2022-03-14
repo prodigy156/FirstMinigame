@@ -206,7 +206,7 @@ bool Game::Update()
 			offsetX = 46;
 			offsetY = 48;
 		}
-		Shots[idx_shot].Init(x + offsetX, y + offsetY, 12, 12, 10, (mouseX - x) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)), (mouseY - y) / sqrt(pow(mouseY - y, 2) + pow(mouseX - x, 2)));
+		Shots[idx_shot].Init(x + offsetX, y + offsetY, 12, 12, 10, (mouseX - (x + offsetX)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)), (mouseY - (y + offsetY)) / sqrt(pow(mouseY - (y + offsetY), 2) + pow(mouseX - (x + offsetX), 2)));
 		idx_shot++;
 		idx_shot %= MAX_SHOTS;
 	}
