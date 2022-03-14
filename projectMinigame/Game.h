@@ -15,7 +15,7 @@
 #define WINDOW_HEIGHT	768
 #define MAX_KEYS		256
 #define MAX_SHOTS		128
-#define MAX_ENEMIES		128
+#define MAX_ENEMIES		128 //This number must be one higher of the desired enemies
 #define PLAYER_CENTER   20
 
 

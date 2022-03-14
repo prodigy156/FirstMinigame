@@ -14,7 +14,7 @@ bool Game::Init()
 		return false;
 	}
 	//Create our window: title, x, y, w, h, flags
-	Window = SDL_CreateWindow("Spaceship: arrow keys + space, f1: god mode", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	Window = SDL_CreateWindow("Spaceship: arrow keys + space, f1: god mode, F2: Disable enemies (dont press)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (Window == NULL)
 	{
 		SDL_Log("Unable to create window: %s", SDL_GetError());
@@ -214,7 +214,7 @@ bool Game::Update()
 		if (waves == 0) {
 			toggle_enemies = false;
 		}
-			int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
+		int val1 = rand() % 2, val2 = rand() % 2, val3 = rand() % WINDOW_WIDTH, val4 = rand() % WINDOW_HEIGHT, x = 0, y = 0;
 			if (val1 == 0 && val2 == 0) {
 				x = -50;
 				y = val4;
@@ -264,7 +264,7 @@ bool Game::Update()
 				Shots[j].ShutDown();
 				if (Enemy[i].GetEnemyHP() <= 0) {
 					Enemy[i].ShutDown();
-					waves++;
+					waves += 1;
 					Enemy[i].ResetEnemyPos();
 				}
 			}
