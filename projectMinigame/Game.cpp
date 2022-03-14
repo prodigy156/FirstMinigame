@@ -38,7 +38,7 @@ bool Game::Init()
 
 	//Init variables
 	//size: 104x82
-	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 5, NULL, NULL);
+	Player.Init(20, WINDOW_HEIGHT >> 1, 64, 64, 2, NULL, NULL);
 	idx_shot = 0;
 	int w;
 	SDL_QueryTexture(img_background, NULL, NULL, &w, NULL);
@@ -284,7 +284,7 @@ bool Game::Update()
 	//Enemy kill
 	for (int i = 0; i < idx_Enemy; i++) {
 		for (int j = 0; j < idx_shot; j++) {
-			if (((Enemy[i].GetX() - Shots[j].GetX()) <= 50) && ((Enemy[i].GetX() - Shots[j].GetX()) >= -50) && ((Enemy[i].GetY() - Shots[j].GetY()) <= 50) && ((Enemy[i].GetY() - Shots[j].GetY()) >= -50)) {
+			if (((Enemy[i].GetX() - Shots[j].GetX()) <= 40) && ((Enemy[i].GetX() - Shots[j].GetX()) >= -40) && ((Enemy[i].GetY() - Shots[j].GetY()) <= 40) && ((Enemy[i].GetY() - Shots[j].GetY()) >= -40)) {
 				Enemy[i].EnemyHPloss(2);
 				Shots[j].ShutDown();
 				if (Enemy[i].GetEnemyHP() <= 0) {
